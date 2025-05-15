@@ -22,6 +22,7 @@ export function MonthRevenueCard() {
       <CardContent className="space-y-1">
         {monthRevenue ? (
           <>
+            {/* {console.log(monthRevenue)} */}
             <span className="text-2xl font-bold tracking-tight">
               {monthRevenue.receipt.toLocaleString('pt-BR', {
                 style: 'currency',

@@ -23,8 +23,9 @@ export function MonthCanceledOrdersAmountCard() {
       <CardContent className="space-y-1">
         {monthCanceledOrdersAmount ? (
           <>
+            {console.log(monthCanceledOrdersAmount)}
             <span className="text-2xl font-bold tracking-tight">
-              {monthCanceledOrdersAmount.receipt.toLocaleString('pt-BR')}
+              {monthCanceledOrdersAmount.amount.toLocaleString('pt-BR')}
             </span>
             <p className="text-muted-foreground text-xs">
               {monthCanceledOrdersAmount.diffFromLastMonth < 0 ? (
