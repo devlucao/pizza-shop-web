@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { subDays } from 'date-fns'
 import { Loader2 } from 'lucide-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { DateRange } from 'react-day-picker'
 import {
   CartesianGrid,
@@ -30,13 +30,22 @@ export function RevenueChart() {
     to: new Date(),
   })
   const { data: dailyRevenueInPeriod } = useQuery({
-    queryKey: ['metrics', 'daily-revenue-in-period'],
+    queryKey: ['metrics', 'daily-revenue-in-period', dateRange],
     queryFn: () =>
       getDailyRevenueInPeriod({
         from: dateRange?.from,
         to: dateRange?.to,
       }),
   })
+
+  const chartData = useMemo(() => {
+    return dailyRevenueInPeriod?.map((chartItem) => {
+      return {
+        date: chartItem.date,
+        receipt: chartItem.receipt / 100,
+      }
+    })
+  }, [dailyRevenueInPeriod])
 
   return (
     <Card className="col-span-6">
@@ -53,17 +62,11 @@ export function RevenueChart() {
         </div>
       </CardHeader>
       <CardContent>
-        {dailyRevenueInPeriod ? (
+        {chartData ? (
           <ResponsiveContainer width="100%" height={240}>
-            <LineChart data={dailyRevenueInPeriod} style={{ fontSize: 12 }}>
+            <LineChart data={chartData} style={{ fontSize: 12 }}>
+              {console.log(chartData)}
               <CartesianGrid vertical={false} className="stroke-muted" />
-              <Line
-                type="linear"
-                strokeWidth={2}
-                dataKey="receipt"
-                stroke={colors.violet['500']}
-              />
-
               <XAxis dataKey="date" tickLine={false} axisLine={false} dy={16} />
               <YAxis
                 stroke="#888"
@@ -76,6 +79,12 @@ export function RevenueChart() {
                     currency: 'BRL',
                   })
                 }
+              />
+              <Line
+                type="linear"
+                strokeWidth={2}
+                dataKey="receipt"
+                stroke={colors.violet['500']}
               />
             </LineChart>
           </ResponsiveContainer>
