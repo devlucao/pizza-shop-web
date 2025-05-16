@@ -23,7 +23,6 @@ export function MonthCanceledOrdersAmountCard() {
       <CardContent className="space-y-1">
         {monthCanceledOrdersAmount ? (
           <>
-            {console.log(monthCanceledOrdersAmount)}
             <span className="text-2xl font-bold tracking-tight">
               {monthCanceledOrdersAmount.amount.toLocaleString('pt-BR')}
             </span>
